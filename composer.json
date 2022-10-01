@@ -1,0 +1,22 @@
+{
+    "name": "chritophedlr/steering-msoffice",
+    "description": "Steering Microsoft Office with PHP and COM inteface",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Christophedlr\\StMso\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Christophe DALOZ - DE LOS RIOS",
+            "email": "christophedlr@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "7.*|8.*",
+        "ext-com_dotnet": "*",
+      "ext-mbstring": "*"
+    }
+}
