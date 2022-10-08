@@ -16,6 +16,15 @@ use com_exception;
 class Excel
 {
     /**
+     * @var array Security mode for Microsoft Excel in open files by prog
+     */
+    public static $msoAutomationSecurity = [
+        'msoAutomationSecurityLow' => 1,
+        'msoAutomationSecurityByUi' => 2,
+        'msoAutomationSecurityForceDisable' => 3
+    ];
+
+    /**
      * @var COM COM Interface instance
      * By default, display the Excel application
      */
@@ -212,5 +221,256 @@ class Excel
         }
 
         return $return;
+    }
+
+    /**
+     * Adding a custom list for incremental copy and/or custom sort
+     * @param $listArray
+     * @param bool $byRow
+     * @return mixed
+     */
+    public function addCustomlList($listArray, bool $byRow = false): Excel
+    {
+        $this->com->AddCustomList($listArray, $byRow);
+
+        return $this;
+    }
+
+    /**
+     * Return a collection of AddIns, represent all add-ins
+     * @return AddIns
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     * @noinspection PhpDocSignatureInspection
+     * @noinspection PhpUndefinedClassInspection
+     */
+    public function getAddIns()
+    {
+        return $this->com->AddIns;
+    }
+
+    /**
+     * Return a collection of AddIns2, represent all modules actually open in Microsoft Excel. Installed or not.
+     * @return AddIns2
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     * @noinspection PhpDocSignatureInspection
+     * @noinspection PhpUndefinedClassInspection
+     */
+    public function getAddIns2()
+    {
+        return $this->com->AddIns2;
+    }
+
+    /**
+     * Set the display the message before replace cells with data over change with drag & drop
+     * @param bool $alert
+     * @return Excel
+     */
+    public function setAlertBeforeOverwrting(bool $alert): Excel
+    {
+        $this->com->AlertBeforeOverwriting = $alert;
+
+        return $this;
+    }
+
+    /**
+     * Get the display the message before replace cells with data over change with drag & drop
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAlertBeforeOverwriting(): bool
+    {
+        return $this->com->AlertBeforeOverwriting;
+    }
+
+    /**
+     * Set the name of alternative directory of startup
+     * @param string $path
+     * @return Excel
+     */
+    public function setAltStartupPath(string $path): Excel
+    {
+        $this->com->AltStartupPath = mb_convert_encoding($path, $this->charset);
+
+        return $this;
+    }
+
+    /**
+     * Get the name of alternative directory of startup
+     * @return string
+     */
+    public function getAltStartupPath(): string
+    {
+        return $this->com->AltStartupPath;
+    }
+
+    /**
+     * Set the ClearType value for display the fonts in menu, ribbon & dialog
+     * @param bool $clearType
+     * @return Excel
+     */
+    public function setAlwaysUseClearType(bool $clearType): Excel
+    {
+        $this->com->AlwaysUseClearType = $clearType;
+
+        return $this;
+    }
+
+    /**
+     * Get the ClearType value for display the fonts in menu, ribbon & dialog
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAlwaysUseClearType(): bool
+    {
+        return $this->com->AlwaysUseClearType;
+    }
+
+    /**
+     * Get if the XML functionalities of Microsoft Excel is available
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getArbitraryXMLSupportAvailable(): bool
+    {
+        return $this->com->ArbitraryXMLSupportAvailable;
+    }
+
+    /**
+     * Set the Microsoft Excel ask user to update a links in the open file used
+     * @param bool $ask
+     * @return Excel
+     */
+    public function setAskToUpdateLinks(bool $ask): Excel
+    {
+        $this->com->AskToUpdateLinks = $ask;
+
+        return $this;
+    }
+
+    /**
+     * Set the Microsoft Excel ask user to update a links in the open file used
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAskToUpdateLinks(): bool
+    {
+        return $this->com->AskToUpdateLinks;
+    }
+
+    /**
+     * Get the Microsoft Help Office viewer of Microsoft Excel
+     * @return IAssistance
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAssistance(): IAssistance
+    {
+        return $this->com->Assistance;
+    }
+
+    /**
+     * Get the AutoCorrect object of represent the Decorrect auto function of Microsoft Excel
+     * @return AutoCorrect
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAutoCorrect(): AutoCorrect
+    {
+        return $this->com->AutoCorrect;
+    }
+
+    /**
+     * Set the Microsoft Excel auto formatting the hyperlinks
+     * @param bool $autoFormatting
+     * @return Excel
+     */
+    public function setAutoFormatAsYouTypeReplaceHyperlinks(bool $autoFormatting): Excel
+    {
+        $this->com->AutoFormatAsYouTypeReplaceHyperlinks = $autoFormatting;
+
+        return $this;
+    }
+
+    /**
+     * Get the Microsoft Excel auto formatting the hyperlinks
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAutoFormatAsYouTypeReplaceHyperlinks(): bool
+    {
+        return $this->com->AutoFormatYouTypeReplaceHyperlinks;
+    }
+
+    /**
+     * Set the msoAutomationSecurity const for represent the security mode used by Microsoft Excel in open files by prog
+     * @param int $msoAutomationSecurity
+     * @return Excel
+     * @throws Exception
+     */
+    public function setAutomationSecurity(int $msoAutomationSecurity): Excel
+    {
+        if (
+            $msoAutomationSecurity < self::$msoAutomationSecurity['msoAutomationSecurityLow']
+            || $msoAutomationSecurity > self::$msoAutomationSecurity['msoAutomationSecurityForceDisable']
+        ) {
+            throw new Exception("Please used the msoAutomationSecurity static property, for used the valid value");
+        }
+
+        $this->com->AutomationSecurity = $msoAutomationSecurity;
+
+        return $this;
+    }
+
+    /**
+     * Get the msoAutomationSecurity const for represent the security mode used by Microsoft Excel in open files by prog
+     * @return int
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAutomationSecurity(): int
+    {
+        return $this->com->AutomationSecurity;
+    }
+
+    /**
+     * Set the auto apply the multiplication by 100 for the formatting cells in percentage
+     * @param bool $percentEntry
+     * @return Excel
+     */
+    public function setAutoPercentEntry(bool $percentEntry): Excel
+    {
+        $this->com->AutoPercentEntry = $percentEntry;
+
+        return $this;
+    }
+
+    /**
+     * Get the auto apply the multiplication by 100 for the formatting cells in percentage
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAutoPercentEntry(): bool
+    {
+        return $this->com->AutoPercentEntry;
+    }
+
+    /**
+     * Get the AutoRecover object for get the files format in the time interval
+     * @return AutoRecover
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getAutoRecover(): AutoRecover
+    {
+        return $this->com->AutoRecover;
+    }
+
+    /**
+     * Get the build number of Microsoft Excel
+     * @return int
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getBuild(): int
+    {
+        return $this->com->Build;
     }
 }
