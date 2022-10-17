@@ -24,6 +24,12 @@ class Excel
         'msoAutomationSecurityForceDisable' => 3
     ];
 
+    public static $XlCalculation = [
+        'xlCalculationAutomatic' => -4105,
+        'xlCalculationManual' => -4135,
+        'xlCalculationSutomatic' => 2
+    ];
+
     /**
      * @var COM COM Interface instance
      * By default, display the Excel application
@@ -472,5 +478,90 @@ class Excel
     public function getBuild(): int
     {
         return $this->com->Build;
+    }
+
+    /**
+     * Calculate the all workbooks are opens
+     */
+    public function calculate(): Excel
+    {
+        $this->com->Calculate;
+
+        return $this;
+    }
+
+    /**
+     * Set the calculate workbooks before save on disk.
+     * If the Calculation property defined to xlManual.
+     * @param bool $calculate
+     * @return Excel
+     */
+    public function setCalculateBeforeSave(bool $calculate): Excel
+    {
+        $this->com->CalculateBeforeSave = $calculate;
+
+        return $this;
+    }
+
+    /**
+     * Get the calculate workbooks before save on disk
+     * @return bool
+     */
+    public function getCalculateBeforeSave(): bool
+    {
+        return $this->com->CalculateBeforeSave;
+    }
+
+    /**
+     * This method calcul all data in all workbooks are opens
+     */
+    public function calculateFull(): Excel
+    {
+        $this->com->CalculateFull;
+
+        return $this;
+    }
+
+    /**
+     * For all workbooks are opens, this method calculate all data and dependencies
+     * @return Excel
+     */
+    public function calculateFullRebuild(): Excel
+    {
+        $this->com->CalculateFullRebuild;
+
+        return $this;
+    }
+
+    /**
+     * Execute all queries in the OLEDB and OLAP sources
+     * @return Excel
+     */
+    public function calcuateUntilAsyncQueriesDone(): Excel
+    {
+        $this->com->CalculateUnitlAsyncQueriesDone;
+
+        return $this;
+    }
+
+    /**
+     * Set the XlCalculation value of calculation mode
+     * @param int $xlCalculation
+     * @return Excel
+     */
+    public function setCalculation(int $xlCalculation): Excel
+    {
+        $this->com->Calculation = $xlCalculation;
+
+        return $this;
+    }
+
+    /**
+     * Get the XlCalculation value of calculation mode
+     * @return int $xlCalculation
+     */
+    public function getCalculation(): int
+    {
+        return $this->com->Calculation;
     }
 }
