@@ -81,18 +81,6 @@ class Excel
     }
 
     /**
-     * Show the Excel alert message
-     * @param bool $alert true if Microsoft Excel display alert message
-     * @return Excel Instance of Excel application (fluent)
-     */
-    public function displayAlerts(bool $alert): Excel
-    {
-        $this->com->DisplayAlerts($alert);
-
-        return $this;
-    }
-
-    /**
      * The active cell of active window
      * @return Range Return the Range instance
      * @throws com_exception
@@ -563,5 +551,171 @@ class Excel
     public function getCalculation(): int
     {
         return $this->com->Calculation;
+    }
+
+    /**
+     * Set the title in window titlebar of Excel application
+     * @param string $title
+     * @return Excel
+     */
+    public function setCaption(string $title): Excel
+    {
+        $this->com->Caption = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get the title in window titlebar of Excel application
+     * @return string
+     */
+    public function getCaption(): string
+    {
+        return $this->com->Caption;
+    }
+
+    /**
+     * get the CommandBars of Excel
+     * @return CommandBars
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpDocSignatureInspection
+     */
+    public function getCommandBars()
+    {
+        return $this->com->CommandBars;
+    }
+
+    /**
+     * Set the display alerts messages
+     * @param bool $alert
+     * @return Excel
+     */
+    public function setDisplayAlerts(bool $alert): Excel
+    {
+        $this->com->DisplayAlerts = $alert;
+
+        return $this;
+    }
+
+    /**
+     * Get the display alerts messages
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getDisplayAlerts(): bool
+    {
+        return $this->com->DisplayAlerts;
+    }
+
+    /**
+     * Set the display status bar
+     * @param bool $alert
+     * @return Excel
+     */
+    public function setDisplayStatusBar(bool $alert): Excel
+    {
+        $this->com->DisplayStatusBar = $alert;
+
+        return $this;
+    }
+
+    /**
+     * Get the display status bar
+     * @return bool
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getDisplayStatusBar(): bool
+    {
+        return $this->com->DisplayStatusBar;
+    }
+
+    /**
+     * Quit the Excel application
+     */
+    public function quit()
+    {
+        $this->com->Quit;
+    }
+
+    /**
+     * Get the list of Worksheets
+     * @return Sheets
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpDocSignatureInspection
+     */
+    public function getSheets()
+    {
+        return $this->com->Sheets;
+    }
+
+    /**
+     * Get the Workbooks
+     * @return Workbooks
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpDocSignatureInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getWorkbooks()
+    {
+        return $this->com->Workbooks;
+    }
+
+    /**
+     * Get the Worksheets
+     * @return Worksheets
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpDocSignatureInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public function getWorksheets()
+    {
+        return $this->com->Worksheets;
+    }
+
+    /**
+     * Magic Method
+     * @param string $nameOfFunction
+     * @param $arguments
+     * @return Windows
+     * @throws Exception
+     * @noinspection PhpUndefinedClassInspection
+     */
+    public function __call(string $nameOfFunction, $arguments)
+    {
+        if ($nameOfFunction === "getWindows") {
+            if (count($arguments) === 0) {
+                return $this->getWindows();
+            } else if (count($arguments) === 1) {
+                return $this->getWindow($arguments[0]);
+            }
+
+            throw new Exception("getWindow required zero or one argument");
+        }
+    }
+
+    /**
+     * Get all Windows
+     * @return Windows
+     * @noinspection PhpUndefinedClassInspection
+     * @noinspection PhpDocSignatureInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    private function getWindows()
+    {
+        return $this->com->Windows;
+    }
+
+    /**
+     * Get specific Window
+     * @return Windows
+     * @noinspection PhpDocSignatureInspection
+     * @noinspection PhpUndefinedMethodInspection
+     * @noinspection PhpUndefinedClassInspection
+     */
+    private function getWindow(int $number)
+    {
+        return $this->com->Windows($number);
     }
 }
